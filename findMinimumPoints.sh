@@ -7,6 +7,7 @@ head=0
 tail=0
 target=21
 flip=0
+minimum=2
 
 while (( 1 ))
 do
@@ -21,25 +22,16 @@ do
                 echo "Tails"
                 ((tail++))
         fi
-
-        if (( head == target || tail == target))
-        then
-                break
-        fi
-done
-
-echo "-----------------------------------------------"
-
-echo "Head count is $head And Tail Count is $tail"
-
-echo "-----------------------------------------------"
-
-if(( head > tail ))
+difference=$(( head - tail ))
+if(( head == target && difference >= minimum ))
 then
-        echo "Head is Winner by $(( head - tail ))"
-elif(( tail > head ))
+	echo "Head was win by $difference points"
+	break
+elif(( tail == target && ${difference#-} >= minimum ))
 then
-        echo "Tail is Winner by $(( tail -head ))"
-else
-	echo "its Tie"
+	echo "Tail was win by ${difference#-} Pints"
+	break
 fi
+done
+echo "-----------------------------------------------"
+echo "Head count is $head And Tail Count is $tail"
